@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ObraCerta - Calculadora</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      width: 360px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #4facfe;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #007bff;
+    }
+
+    .whatsapp {
+      background: #25D366;
+    }
+
+    .whatsapp:hover {
+      background: #1da851;
+    }
+
+    .checkbox {
+      margin-top: 8px;
+    }
+
+    #resultado {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>ObraCerta</h1>
+  <p>Calculadora de Material</p>
+
+  <select id="tipo" onchange="mostrarCampos()">
+    <option value="">Escolha o tipo</option>
+    <option value="pvc">PVC</option>
+    <option value="ceramica">Cerâmica</option>
+  </select>
+
+  <!-- PVC -->
+  <div id="pvcCampos" style="display:none;">
+    <div class="section">
+      <strong>PVC</strong>
+      <input type="number" id="largura" placeholder="Largura (m)">
+      <input type="number" id="comprimento" placeholder="Comprimento (m)">
+      <input type="number" id="valorMetro" placeholder="Valor do m²">
+
+      <div class="checkbox">
+        <input type="checkbox" id="sobraPVC"> +10% de sobra
+      </div>
+    </div>
+
+    <div class="section">
+      <strong>Perfil</strong>
+      <input type="number" id="qtdPerfil" placeholder="Quantidade">
+      <input type="number" id="valorPerfil" placeholder="Valor">
+    </div>
+
+    <div class="section">
+      <strong>Parafusos</strong>
+      <input type="number" id="metragemParafuso" placeholder="Metragem (m)">
+    </div>
+  </div>
+
+  <!-- CERÂMICA -->
+  <div id="ceramicaCampos" style="display:none;">
+    <div class="section">
+      <strong>Cerâmica</strong>
+      <input type="number" id="larguraCeramica" placeholder="Largura (m)">
+      <input type="number" id="comprimentoCeramica" placeholder="Comprimento (m)">
+      <input type="number" id="m2Caixa" placeholder="m² por caixa">
+      <input type="number" id="valorCeramica" placeholder="Valor do m²">
+
+      <div class="checkbox">
+        <input type="checkbox" id="sobraCeramica"> +10% de sobra
+      </div>
+    </div>
+  </div>
+
+  <button onclick="calcular()">Calcular</button>
+  <button class="whatsapp" onclick="enviarWhatsApp()">Enviar no WhatsApp</button>
+
+  <div id="resultado"></div>
+</div>
+
+<script>
+let textoWhatsApp = "";
+
+function mostrarCampos() {
+  document.getElementById("pvcCampos").style.display = "none";
+  document.getElementById("ceramicaCampos").style.display = "none";
+  document.getElementById("resultado").innerHTML = "";
+
+  let tipo = document.getElementById("tipo").value;
+
+  if (tipo === "pvc") {
+    document.getElementById("pvcCampos").style.display = "block";
+  }
+
+  if (tipo === "ceramica") {
+    document.getElementById("ceramicaCampos").style.display = "block";
+  }
+}
+
+function calcular() {
+  let tipo = document.getElementById("tipo").value;
+  let resultado = "";
+
+  if (tipo === "pvc") {
+    let largura = parseFloat(document.getElementById("largura").value);
+    let comprimento = parseFloat(document.getElementById("comprimento").value);
+    let valor = parseFloat(document.getElementById("valorMetro").value);
+    let sobra = document.getElementById("sobraPVC").checked;
+
+    let area = largura * comprimento;
+    if (sobra) area *= 1.10;
+
+    let totalMaterial = area * valor;
+
+    let qtdPerfil = parseFloat(document.getElementById("qtdPerfil").value) || 0;
+    let valorPerfil = parseFloat(document.getElementById("valorPerfil").value) || 0;
+    let totalPerfil = qtdPerfil * valorPerfil;
+
+    let metragemParafuso = parseFloat(document.getElementById("metragemParafuso").value) || 0;
+    let parafusos = Math.ceil(metragemParafuso * 15);
+
+    let total = totalMaterial + totalPerfil;
+
+    resultado = `
+      Área: ${area.toFixed(2)} m² <br>
+      Material: R$ ${totalMaterial.toFixed(2)} <br>
+      Perfil: R$ ${totalPerfil.toFixed(2)} <br>
+      Parafusos: ${parafusos} unidades <br>
+      <strong>Total: R$ ${total.toFixed(2)}</strong>
+    `;
+
+    textoWhatsApp = `*Orçamento PVC*%0AÁrea: ${area.toFixed(2)} m²%0ATotal: R$ ${total.toFixed(2)}`;
+  }
+
+  if (tipo === "ceramica") {
+    let largura = parseFloat(document.getElementById("larguraCeramica").value);
+    let comprimento = parseFloat(document.getElementById("comprimentoCeramica").value);
+    let m2Caixa = parseFloat(document.getElementById("m2Caixa").value);
+    let valor = parseFloat(document.getElementById("valorCeramica").value);
+    let sobra = document.getElementById("sobraCeramica").checked;
+
+    let area = largura * comprimento;
+    if (sobra) area *= 1.10;
+
+    let caixas = Math.ceil(area / m2Caixa);
+    let total = area * valor;
+
+    resultado = `
+      Área: ${area.toFixed(2)} m² <br>
+      Caixas: ${caixas} <br>
+      <strong>Total: R$ ${total.toFixed(2)}</strong>
+    `;
+
+    textoWhatsApp = `*Orçamento Cerâmica*%0AÁrea: ${area.toFixed(2)} m²%0ACaixas: ${caixas}%0ATotal: R$ ${total.toFixed(2)}`;
+  }
+
+  document.getElementById("resultado").innerHTML = resultado;
+}
+
+function enviarWhatsApp() {
+  if (!textoWhatsApp) {
+    alert("Faça um cálculo primeiro!");
+    return;
+  }
+
+  let url = "https://wa.me/?text=" + textoWhatsApp;
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
