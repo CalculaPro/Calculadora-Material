@@ -51,18 +51,33 @@
       cursor: pointer;
     }
 
+    button:hover {
+      background: #007bff;
+    }
+
     .whatsapp {
       background: #25D366;
     }
 
+    .whatsapp:hover {
+      background: #1da851;
+    }
+
     #resultado {
       margin-top: 15px;
+      font-size: 14px;
     }
 
     .footer {
       text-align: center;
       margin-top: 20px;
       font-size: 13px;
+      color: #777;
+    }
+
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -75,8 +90,8 @@
   <p>Calculadora gratuita de materiais para sua obra</p>
 
   <p>
-    O ObraCerta é uma ferramenta online que ajuda você a calcular a quantidade de materiais
-    como PVC e cerâmica, evitando desperdícios e facilitando o planejamento da sua obra.
+    O ObraCerta ajuda você a calcular a quantidade de materiais como PVC e cerâmica,
+    evitando desperdícios e facilitando o planejamento da sua obra.
   </p>
 
   <select id="tipo" onchange="mostrarCampos()">
@@ -91,11 +106,11 @@
     <input type="number" id="largura" placeholder="Largura (m)">
     <input type="number" id="comprimento" placeholder="Comprimento (m)">
     <input type="number" id="valorMetro" placeholder="Valor do m²">
-    <input type="checkbox" id="sobraPVC"> +10% de sobra
+    <label><input type="checkbox" id="sobraPVC"> +10% de sobra</label>
 
     <h3>Perfil</h3>
     <input type="number" id="qtdPerfil" placeholder="Quantidade">
-    <input type="number" id="valorPerfil" placeholder="Valor">
+    <input type="number" id="valorPerfil" placeholder="Valor unitário">
 
     <h3>Parafusos</h3>
     <input type="number" id="metragemParafuso" placeholder="Metragem (m)">
@@ -108,7 +123,7 @@
     <input type="number" id="comprimentoCeramica" placeholder="Comprimento (m)">
     <input type="number" id="m2Caixa" placeholder="m² por caixa">
     <input type="number" id="valorCeramica" placeholder="Valor do m²">
-    <input type="checkbox" id="sobraCeramica"> +10% de sobra
+    <label><input type="checkbox" id="sobraCeramica"> +10% de sobra</label>
   </div>
 
   <button onclick="calcular()">Calcular</button>
@@ -116,25 +131,27 @@
 
   <div id="resultado"></div>
 
-  <!-- CONTEÚDO PARA APROVAÇÃO -->
+  <!-- CONTEÚDO (IMPORTANTE PRO ADSENSE) -->
   <hr>
 
   <h2>Como calcular materiais de construção?</h2>
   <p>
-    Para calcular materiais como PVC ou cerâmica, é necessário medir a largura e o comprimento do local.
-    Multiplicando esses valores, você obtém a área total em metros quadrados.
+    Para calcular materiais como PVC ou cerâmica, multiplique a largura pelo comprimento
+    para obter a área em metros quadrados.
   </p>
 
   <p>
-    No caso da cerâmica, também é importante verificar quantos metros quadrados cada caixa cobre,
+    No caso da cerâmica, divida a área total pela quantidade de metros quadrados por caixa
     para saber quantas caixas serão necessárias.
   </p>
 
   <p>
-    Já no PVC, você pode incluir perfis e parafusos no cálculo, garantindo um orçamento mais completo.
+    Para PVC, você também pode calcular perfis e parafusos, garantindo um orçamento completo.
   </p>
 
+  <!-- FOOTER -->
   <div class="footer">
+    © 2026 ObraCerta <br><br>
     <a href="sobre.html">Sobre</a> |
     <a href="privacidade.html">Privacidade</a> |
     <a href="contato.html">Contato</a>
@@ -187,8 +204,10 @@ function calcular() {
 
     resultado = `
       Área: ${area.toFixed(2)} m² <br>
-      Total: R$ ${total.toFixed(2)} <br>
-      Parafusos: ${parafusos}
+      Material: R$ ${totalMaterial.toFixed(2)} <br>
+      Perfil: R$ ${totalPerfil.toFixed(2)} <br>
+      Parafusos: ${parafusos} unidades <br>
+      <strong>Total: R$ ${total.toFixed(2)}</strong>
     `;
 
     textoWhatsApp = `Orçamento PVC - Total: R$ ${total.toFixed(2)}`;
@@ -210,7 +229,7 @@ function calcular() {
     resultado = `
       Área: ${area.toFixed(2)} m² <br>
       Caixas: ${caixas} <br>
-      Total: R$ ${total.toFixed(2)}
+      <strong>Total: R$ ${total.toFixed(2)}</strong>
     `;
 
     textoWhatsApp = `Orçamento Cerâmica - Total: R$ ${total.toFixed(2)}`;
