@@ -2,36 +2,33 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>ObraCerta - Calculadora</title>
+  <title>ObraCerta - Calculadora de Materiais</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #4facfe, #00f2fe);
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 20px;
     }
 
-    .box {
+    .container {
+      max-width: 500px;
+      margin: auto;
       background: white;
       padding: 25px;
       border-radius: 15px;
-      width: 360px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
-    h1 {
+    h1, h2, h3 {
       text-align: center;
-      margin-bottom: 5px;
     }
 
     p {
+      font-size: 14px;
+      color: #444;
       text-align: center;
-      color: #666;
-      margin-bottom: 15px;
     }
 
     input, select {
@@ -54,40 +51,33 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background: #007bff;
-    }
-
     .whatsapp {
       background: #25D366;
     }
 
-    .whatsapp:hover {
-      background: #1da851;
-    }
-
-    .checkbox {
-      margin-top: 8px;
-    }
-
     #resultado {
       margin-top: 15px;
-      font-size: 14px;
     }
 
-    .section {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #eee;
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
+
   <h1>ObraCerta</h1>
-  <p>Calculadora de Material</p>
+  <p>Calculadora gratuita de materiais para sua obra</p>
+
+  <p>
+    O ObraCerta é uma ferramenta online que ajuda você a calcular a quantidade de materiais
+    como PVC e cerâmica, evitando desperdícios e facilitando o planejamento da sua obra.
+  </p>
 
   <select id="tipo" onchange="mostrarCampos()">
     <option value="">Escolha o tipo</option>
@@ -97,48 +87,59 @@
 
   <!-- PVC -->
   <div id="pvcCampos" style="display:none;">
-    <div class="section">
-      <strong>PVC</strong>
-      <input type="number" id="largura" placeholder="Largura (m)">
-      <input type="number" id="comprimento" placeholder="Comprimento (m)">
-      <input type="number" id="valorMetro" placeholder="Valor do m²">
+    <h3>PVC</h3>
+    <input type="number" id="largura" placeholder="Largura (m)">
+    <input type="number" id="comprimento" placeholder="Comprimento (m)">
+    <input type="number" id="valorMetro" placeholder="Valor do m²">
+    <input type="checkbox" id="sobraPVC"> +10% de sobra
 
-      <div class="checkbox">
-        <input type="checkbox" id="sobraPVC"> +10% de sobra
-      </div>
-    </div>
+    <h3>Perfil</h3>
+    <input type="number" id="qtdPerfil" placeholder="Quantidade">
+    <input type="number" id="valorPerfil" placeholder="Valor">
 
-    <div class="section">
-      <strong>Perfil</strong>
-      <input type="number" id="qtdPerfil" placeholder="Quantidade">
-      <input type="number" id="valorPerfil" placeholder="Valor">
-    </div>
-
-    <div class="section">
-      <strong>Parafusos</strong>
-      <input type="number" id="metragemParafuso" placeholder="Metragem (m)">
-    </div>
+    <h3>Parafusos</h3>
+    <input type="number" id="metragemParafuso" placeholder="Metragem (m)">
   </div>
 
   <!-- CERÂMICA -->
   <div id="ceramicaCampos" style="display:none;">
-    <div class="section">
-      <strong>Cerâmica</strong>
-      <input type="number" id="larguraCeramica" placeholder="Largura (m)">
-      <input type="number" id="comprimentoCeramica" placeholder="Comprimento (m)">
-      <input type="number" id="m2Caixa" placeholder="m² por caixa">
-      <input type="number" id="valorCeramica" placeholder="Valor do m²">
-
-      <div class="checkbox">
-        <input type="checkbox" id="sobraCeramica"> +10% de sobra
-      </div>
-    </div>
+    <h3>Cerâmica</h3>
+    <input type="number" id="larguraCeramica" placeholder="Largura (m)">
+    <input type="number" id="comprimentoCeramica" placeholder="Comprimento (m)">
+    <input type="number" id="m2Caixa" placeholder="m² por caixa">
+    <input type="number" id="valorCeramica" placeholder="Valor do m²">
+    <input type="checkbox" id="sobraCeramica"> +10% de sobra
   </div>
 
   <button onclick="calcular()">Calcular</button>
   <button class="whatsapp" onclick="enviarWhatsApp()">Enviar no WhatsApp</button>
 
   <div id="resultado"></div>
+
+  <!-- CONTEÚDO PARA APROVAÇÃO -->
+  <hr>
+
+  <h2>Como calcular materiais de construção?</h2>
+  <p>
+    Para calcular materiais como PVC ou cerâmica, é necessário medir a largura e o comprimento do local.
+    Multiplicando esses valores, você obtém a área total em metros quadrados.
+  </p>
+
+  <p>
+    No caso da cerâmica, também é importante verificar quantos metros quadrados cada caixa cobre,
+    para saber quantas caixas serão necessárias.
+  </p>
+
+  <p>
+    Já no PVC, você pode incluir perfis e parafusos no cálculo, garantindo um orçamento mais completo.
+  </p>
+
+  <div class="footer">
+    <a href="sobre.html">Sobre</a> |
+    <a href="privacidade.html">Privacidade</a> |
+    <a href="contato.html">Contato</a>
+  </div>
+
 </div>
 
 <script>
@@ -186,13 +187,11 @@ function calcular() {
 
     resultado = `
       Área: ${area.toFixed(2)} m² <br>
-      Material: R$ ${totalMaterial.toFixed(2)} <br>
-      Perfil: R$ ${totalPerfil.toFixed(2)} <br>
-      Parafusos: ${parafusos} unidades <br>
-      <strong>Total: R$ ${total.toFixed(2)}</strong>
+      Total: R$ ${total.toFixed(2)} <br>
+      Parafusos: ${parafusos}
     `;
 
-    textoWhatsApp = `*Orçamento PVC*%0AÁrea: ${area.toFixed(2)} m²%0ATotal: R$ ${total.toFixed(2)}`;
+    textoWhatsApp = `Orçamento PVC - Total: R$ ${total.toFixed(2)}`;
   }
 
   if (tipo === "ceramica") {
@@ -211,10 +210,10 @@ function calcular() {
     resultado = `
       Área: ${area.toFixed(2)} m² <br>
       Caixas: ${caixas} <br>
-      <strong>Total: R$ ${total.toFixed(2)}</strong>
+      Total: R$ ${total.toFixed(2)}
     `;
 
-    textoWhatsApp = `*Orçamento Cerâmica*%0AÁrea: ${area.toFixed(2)} m²%0ACaixas: ${caixas}%0ATotal: R$ ${total.toFixed(2)}`;
+    textoWhatsApp = `Orçamento Cerâmica - Total: R$ ${total.toFixed(2)}`;
   }
 
   document.getElementById("resultado").innerHTML = resultado;
@@ -226,8 +225,7 @@ function enviarWhatsApp() {
     return;
   }
 
-  let url = "https://wa.me/?text=" + textoWhatsApp;
-  window.open(url, "_blank");
+  window.open("https://wa.me/?text=" + textoWhatsApp, "_blank");
 }
 </script>
 
